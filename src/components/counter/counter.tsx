@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from 'react-redux';
 import './counter.scss';
-import type { RootState } from '../../store/store';
-import { increment, decrement, incrementByAmount } from '../../store/counter/counterSlice';
+import type { RootState } from '@store/store';
+import { increment, decrement, incrementByAmount } from '@store/counter/counterSlice';
 import styled from 'styled-components';
 
 const Button = styled.button`

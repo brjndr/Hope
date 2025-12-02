@@ -10,4 +10,10 @@ export default defineConfig({
       },
     }),
   ],
+  resolve: {
+    alias: {
+      '@components': '/src/components', // Adjust path as needed
+      '@store': '/src/store',
+    },
+  },
 })
