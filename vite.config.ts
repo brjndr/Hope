@@ -14,6 +14,7 @@ export default defineConfig({
     alias: {
       '@components': '/src/components', // Adjust path as needed
       '@store': '/src/store',
+      "@auth": "/src/auth",
     },
   },
 })
