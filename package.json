@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "start": "vite --open",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -15,7 +15,6 @@
     "react-dom": "^19.2.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.10.0",
-    "sass": "^1.94.2",
     "styled-components": "^6.1.19"
   },
   "devDependencies": {

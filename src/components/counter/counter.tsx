@@ -1,8 +1,16 @@
 import { useDispatch, useSelector } from 'react-redux';
-import './counter.scss';
 import type { RootState } from '@store/store';
 import { increment, decrement, incrementByAmount } from '@store/counter/counterSlice';
 import styled from 'styled-components';
+
+const CounterCard = styled.div`
+      padding: 2em;`;
+
+const ActionButton = styled.div`
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+      margin-top: 1rem;`;
 
 const Button = styled.button`
       padding: 10px 20px;
@@ -23,14 +31,14 @@ const Counter = () =>  {
 
   return (
     <>
-      <div className="counterCard">
+      <CounterCard>
         <h2>Counter: {count}</h2>
-        <div className='actionButton'>
+        <ActionButton>
           <Button onClick={() => dispatch(increment())}>Increment</Button>
           <Button onClick={() => dispatch(decrement())}>Decrement</Button>
           <Button onClick={() => dispatch(incrementByAmount(5))}>Increment by 5</Button>
-        </div>
-      </div>
+        </ActionButton>
+      </CounterCard>
     </>
   )
 }      

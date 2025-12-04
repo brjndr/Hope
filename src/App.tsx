@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
 import Header from '@components/header/header';
-import './App.scss'
+import './App.css'
 import Dashboard from '@components/dashboard/dashboard';
 import Planning from '@components/planning/planning';
 import CreativeStudio from '@components/creativeStudio/creativeStudio';
