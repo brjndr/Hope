@@ -1,12 +1,11 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.tsx'
+import App from './App'
 import { Provider as ReduxProvider } from 'react-redux'
 import { store } from '@store/store'
-import { AuthProvider } from './auth/AuthProvider.tsx'
+import { AuthProvider } from '@auth/AuthProvider'
 import { QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
 
 
 const queryClient = new QueryClient({
