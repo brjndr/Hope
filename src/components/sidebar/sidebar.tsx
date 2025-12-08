@@ -1,104 +1,46 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import styled from "styled-components";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import IconButton from "@mui/material/IconButton";
+import Tooltip from "@mui/material/Tooltip";
+import Divider from "@mui/material/Divider";
+import { styled } from "@mui/material/styles";
 
-const SidebarContainer = styled.aside<{ isOpen: boolean }>`
-  width: ${(props) => (props.isOpen ? "250px" : "80px")};
-  background-color: #1f1f1f;
-  color: #fff;
-  transition: width 0.3s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  border-right: 1px solid #333;
-`;
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import DashboardIcon from "@mui/icons-material/Dashboard";
+import EventNoteIcon from "@mui/icons-material/EventNote";
+import BrushIcon from "@mui/icons-material/Brush";
+import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
+import CalendarTodayIcon from "@mui/icons-material/CalendarToday";
 
-const ToggleButton = styled.button`
-  width: 100%;
-  padding: 16px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-size: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background-color 0.2s;
+const OPEN_WIDTH = 250;
+const CLOSED_WIDTH = 72;
 
-  &:hover {
-    background-color: #333;
-  }
-`;
+/* to change header height, update this const. */
+const HEADER_HEIGHT = 72;
 
-const NavList = styled.nav`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  padding: 16px 8px;
-  flex: 1;
-`;
+const Root = styled("aside")(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  borderRight: `1px solid ${theme.palette.divider}`,
+  background: theme.palette.background.paper,
+}));
 
-const NavItem = styled.button<{ isActive: boolean }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 16px;
-  background-color: ${(props) => (props.isActive ? "#1677ff" : "transparent")};
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  border-radius: 6px;
-  transition: background-color 0.2s;
-  white-space: nowrap;
-  font-size: 14px;
-
-  &:hover {
-    background-color: ${(props) => (props.isActive ? "#0d6ae6" : "#333")};
-  }
-
-  svg {
-    min-width: 24px;
-    width: 24px;
-    height: 24px;
-  }
-`;
-
-const NavLabel = styled.span`
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
-// Icon components
-const DashboardIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z" />
-  </svg>
-);
-
-const PlanningIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zm-5-7H7v2h7v-2zm6-2H7v2h12v-2z" />
-  </svg>
-);
-
-const CreativeIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z" />
-  </svg>
-);
-
-const WorkflowIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-  </svg>
-);
-
-const SchedulerIcon = () => (
-  <svg viewBox="0 0 24 24" fill="currentColor">
-    <path d="M19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z" />
-  </svg>
-);
+const DrawerFooter = styled(Box)(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  padding: theme.spacing(2),
+  // keep header inside the drawer aligned with header height
+  minHeight: HEADER_HEIGHT - 8,
+}));
 
 interface NavItemConfig {
   label: string;
@@ -106,69 +48,120 @@ interface NavItemConfig {
   icon: React.ReactNode;
 }
 
-const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const Sidebar: React.FC = () => {
+  const [isOpen, setIsOpen] = useState<boolean>(true);
   const navigate = useNavigate();
   const location = useLocation();
 
   const navItems: NavItemConfig[] = [
-    {
-      label: "Dashboard",
-      path: "/dashboard",
-      icon: <DashboardIcon />,
-    },
-    {
-      label: "Planning",
-      path: "/planning",
-      icon: <PlanningIcon />,
-    },
-    {
-      label: "Creative Studio",
-      path: "/creativeStudio",
-      icon: <CreativeIcon />,
-    },
-    {
-      label: "Workflow Center",
-      path: "/workflowCenter",
-      icon: <WorkflowIcon />,
-    },
-    {
-      label: "Scheduler",
-      path: "/scheduler",
-      icon: <SchedulerIcon />,
-    },
+    { label: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
+    { label: "Planning", path: "/planning", icon: <EventNoteIcon /> },
+    { label: "Creative Studio", path: "/creativeStudio", icon: <BrushIcon /> },
+    { label: "Workflow Center", path: "/workflowCenter", icon: <WorkOutlineIcon /> },
+    { label: "Scheduler", path: "/scheduler", icon: <CalendarTodayIcon /> },
   ];
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleSidebar = () => setIsOpen((s) => !s);
 
   const handleNavigation = (path: string) => {
-    navigate(path);
+    if (location.pathname !== path) navigate(path);
   };
 
-  const isActive = (path: string) => location.pathname === path;
-
   return (
-    <SidebarContainer isOpen={isOpen}>
-      <ToggleButton onClick={toggleSidebar} title="Toggle Sidebar">
-        {isOpen ? "✕" : "☰"}
-      </ToggleButton>
+    <Root>
+      <Drawer
+        variant="permanent"
+        slotProps={{
+          paper: {
+            sx: (theme) => ({
+            position: "fixed",
+            top: `${HEADER_HEIGHT}px`,
+            height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+            width: isOpen ? OPEN_WIDTH : CLOSED_WIDTH,
+            overflowX: "hidden",
+            transition: theme.transitions.create(["width", "top", "height"], {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
+            boxSizing: "border-box",
+            zIndex: theme.zIndex.appBar - 1,
+          }),
+          }
+        }}
+        sx={{
+          width: isOpen ? OPEN_WIDTH : CLOSED_WIDTH,
+          flexShrink: 0,
+          "& .MuiDrawer-paper": {
+            width: isOpen ? OPEN_WIDTH : CLOSED_WIDTH,
+          },
+        }}
+      >
+        <Box component="nav" sx={{ flex: 1, overflowY: "auto", mt: 1, pt: 1 }}>
+          <List disablePadding>
+            {navItems.map((item) => {
+              const selected = location.pathname === item.path;
 
-      <NavList>
-        {navItems.map((item) => (
-          <NavItem
-            key={item.path}
-            onClick={() => handleNavigation(item.path)}
-            isActive={isActive(item.path)}
-            title={item.label}
-          >
-            {item.icon}
-            {isOpen && <NavLabel>{item.label}</NavLabel>}
-          </NavItem>
-        ))}
-      </NavList>
-    </SidebarContainer>
+              return (
+                <ListItem key={item.path} disablePadding sx={{ display: "block" }}>
+                  <ListItemButton
+                    selected={selected}
+                    onClick={() => handleNavigation(item.path)}
+                    sx={{
+                      minHeight: 48,
+                      justifyContent: isOpen ? "initial" : "center",
+                      px: 2,
+                      mx: 1,
+                      borderRadius: 1,
+                      "&.Mui-selected": {
+                        backgroundColor: (theme) => theme.palette.action.selected,
+                        "&:hover": {
+                          backgroundColor: (theme) => theme.palette.action.selected,
+                        },
+                      },
+                    }}
+                    aria-current={selected ? "page" : undefined}
+                    title={item.label}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        minWidth: 0,
+                        mr: isOpen ? 2 : 0,
+                        justifyContent: "center",
+                        color: selected ? "primary.main" : "inherit",
+                      }}
+                    >
+                      {item.icon}
+                    </ListItemIcon>
+
+                    {isOpen && <ListItemText primary={item.label} />}
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+        </Box>
+
+        <Divider />
+        
+        <DrawerFooter>
+          <Tooltip title={isOpen ? "Collapse" : "Open"}>
+            <IconButton
+              onClick={toggleSidebar}
+              size="small"
+              aria-label={isOpen ? "Collapse sidebar" : "Open sidebar"}
+              sx={{
+                marginLeft: "auto",
+                borderRadius: 1,
+                bgcolor: "transparent",
+                "&:hover": { bgcolor: "action.hover" },
+              }}
+            >
+              {isOpen ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+            </IconButton>
+          </Tooltip>
+        </DrawerFooter>
+      </Drawer>
+    </Root>
   );
 };
 
