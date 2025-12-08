@@ -73,8 +73,8 @@ export const AuthProvider = ({ children} : IAuthContextProps) => {
 
                 setupTokenRefresh();
 
-                // redirect to dashboard after successful login
-                window.history.replaceState({}, "", "/dashboard");
+                // redirect to homepage after successful login
+                window.history.replaceState({}, "", "/homepage");
                 }
 
                 setInitialized(true);
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children} : IAuthContextProps) => {
     }, []);
 
     const login = () => keycloak.login({ 
-        redirectUri: window.location.origin + "/dashboard"    
+        redirectUri: window.location.origin + "/homepage"    
     });
 
     const logout = () => {
