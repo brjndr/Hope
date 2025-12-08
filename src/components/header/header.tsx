@@ -124,13 +124,13 @@ const Header: React.FC = () => {
             onClose={() => setProductAnchor(null)}
             anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           >
-            <MenuItem onClick={() => navigate("/product/jio-telecom")}>
+            <MenuItem onClick={() => navigate("#")}>
               Jio Telecom
             </MenuItem>
-            <MenuItem onClick={() => navigate("/product/reliance-retail")}>
+            <MenuItem onClick={() => navigate("#")}>
               Reliance Retail
             </MenuItem>
-            <MenuItem onClick={() => navigate("/product/jiomart")}>
+            <MenuItem onClick={() => navigate("#")}>
               Jio Mart
             </MenuItem>
           </Menu>
@@ -144,7 +144,7 @@ const Header: React.FC = () => {
             </Badge>
           </RoundIconButton>
 
-          <RoundIconButton onClick={() => navigate("/settings")}>
+          <RoundIconButton onClick={() => navigate("#")}>
             <SettingsOutlined />
           </RoundIconButton>
 
@@ -170,8 +170,8 @@ const Header: React.FC = () => {
               onClose={() => setProfileAnchor(null)}
               anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
             >
-              <MenuItem onClick={() => navigate("/profile")}>Profile</MenuItem>
-              <MenuItem onClick={() => navigate("/settings")}>Settings</MenuItem>
+              <MenuItem onClick={() => navigate("#")}>Profile</MenuItem>
+              <MenuItem onClick={() => navigate("#")}>Settings</MenuItem>
 
               <Box sx={{ borderTop: "1px solid #eee", my: 1 }} />
 
