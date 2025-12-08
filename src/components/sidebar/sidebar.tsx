@@ -54,11 +54,11 @@ const Sidebar: React.FC = () => {
   const location = useLocation();
 
   const navItems: NavItemConfig[] = [
-    { label: "Dashboard", path: "/dashboard", icon: <DashboardIcon /> },
-    { label: "Planning", path: "/planning", icon: <EventNoteIcon /> },
-    { label: "Creative Studio", path: "/creativeStudio", icon: <BrushIcon /> },
-    { label: "Workflow Center", path: "/workflowCenter", icon: <WorkOutlineIcon /> },
-    { label: "Scheduler", path: "/scheduler", icon: <CalendarTodayIcon /> },
+    { label: "Dashboard", path: "#", icon: <DashboardIcon /> },
+    { label: "Planning", path: "#", icon: <EventNoteIcon /> },
+    { label: "Creative Studio", path: "#", icon: <BrushIcon /> },
+    { label: "Workflow Center", path: "#", icon: <WorkOutlineIcon /> },
+    { label: "Scheduler", path: "#", icon: <CalendarTodayIcon /> },
   ];
 
   const toggleSidebar = () => setIsOpen((s) => !s);
